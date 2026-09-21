@@ -1,5 +1,6 @@
-import Survey from '@/components/Survey';
+import SiteFrame from '@/components/SiteFrame';
+import CourseHub from '@/components/CourseHub';
 
-export default function Home() {
-  return <Survey />;
+export default function HomePage() {
+  return <SiteFrame><CourseHub /></SiteFrame>;
 }

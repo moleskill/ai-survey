@@ -146,7 +146,7 @@ export default function Survey() {
     return (
       <main className="shell">
         <div className="topbar">
-          <span className="brand"><i aria-hidden="true">✦</i> Неделя информатики</span>
+          <a className="brand" href="/"><i aria-hidden="true">✦</i> Неделя информатики</a>
           <a className="admin-link" href="/admin">Администратору</a>
         </div>
         <div className="hero">
@@ -176,7 +176,7 @@ export default function Survey() {
     return (
       <main className="shell">
         <div className="topbar">
-          <span className="brand"><i aria-hidden="true">✦</i> Неделя информатики</span>
+          <a className="brand" href="/"><i aria-hidden="true">✦</i> Неделя информатики</a>
         </div>
         <div className="hero">
           <p className="eyebrow">Готово</p>
@@ -184,13 +184,16 @@ export default function Survey() {
           <p>
             Итоги опроса покажут на неделе информатики: общие цифры и графики по всей школе.
           </p>
-          {!BLOCK_REPEAT && (
-            <div className="actions">
+          <div className="actions">
+            <a className="btn" href="/">
+              На главную
+            </a>
+            {!BLOCK_REPEAT && (
               <button type="button" className="btn btn-ghost" onClick={restart}>
                 Пройти опрос за другого ученика
               </button>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </main>
     );

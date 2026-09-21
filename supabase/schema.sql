@@ -41,3 +41,19 @@ create table public.responses (
 -- Закрываем таблицу от прямого доступа из браузера:
 -- политик нет, поэтому читать и писать может только сервер (service_role ключ в Next.js API)
 alter table public.responses enable row level security;
+
+-- Анонимные результаты тестов до и после каждого курса MoleSkill.
+-- learner_token — случайный UUID, хранимый только в браузере ученика; имён,
+-- контактов и IP-адресов таблица не содержит.
+create table if not exists public.course_assessments (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  learner_token uuid not null,
+  course_id text not null check (course_id in ('ai-start', 'prompts', 'safe-ai')),
+  stage text not null check (stage in ('before', 'after')),
+  score smallint not null check (score between 0 and 5),
+  answers jsonb not null,
+  unique (learner_token, course_id, stage)
+);
+
+alter table public.course_assessments enable row level security;

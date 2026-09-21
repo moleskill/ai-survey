@@ -1,4 +1,5 @@
 import './globals.css';
+import './site.css';
 import { Unbounded, Golos_Text } from 'next/font/google';
 
 const display = Unbounded({
@@ -16,9 +17,8 @@ const body = Golos_Text({
 });
 
 export const metadata = {
-  title: 'Опрос: ИИ в школе',
-  description: 'Анонимный опрос школьников об использовании искусственного интеллекта',
-  robots: { index: false, follow: false },
+  title: { default: 'MoleSkill', template: '%s | MoleSkill' },
+  description: 'Базовые курсы по искусственному интеллекту: понятно, безопасно и без регистрации.',
 };
 
 export default function RootLayout({ children }) {

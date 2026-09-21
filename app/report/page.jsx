@@ -64,6 +64,7 @@ function TrustByGrade({ trustByGrade }) {
 
 export default function ReportPage() {
   const [stats, setStats] = useState(null);
+  const [courseImpact, setCourseImpact] = useState(null);
   const [generatedAt, setGeneratedAt] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -82,6 +83,7 @@ export default function ReportPage() {
         throw new Error(data.error || 'Не удалось загрузить отчёт');
       }
       setStats(data.stats);
+      setCourseImpact(data.courseImpact);
       setGeneratedAt(data.generatedAt);
     } catch (e) {
       setStats(null);
@@ -128,6 +130,7 @@ export default function ReportPage() {
           <button type="button" className="btn btn-ghost" onClick={load} disabled={loading}>
             {loading ? 'Обновляем…' : 'Обновить данные'}
           </button>
+          <a className="btn btn-ghost" href="/admin">Панель администратора</a>
           <button type="button" className="btn btn-ghost" onClick={logout}>Выйти</button>
         </div>
       </header>
@@ -140,6 +143,32 @@ export default function ReportPage() {
           ))}
         </ul>
       </section>
+
+      {courseImpact && (
+        <section className="impact-report">
+          <p className="eyebrow">MoleSkill · анонимное измерение</p>
+          <h2>Эффект курсов</h2>
+          {courseImpact.completedCount ? (
+            <>
+              <p>Сравнение построено только по анонимным парам «до/после» одного и того же курса.</p>
+              <div className="impact-numbers">
+                <div><span>До курса</span><b>{courseImpact.beforeAverage} / 5</b></div>
+                <div><span>После курса</span><b>{courseImpact.afterAverage} / 5</b></div>
+                <div><span>Прошли оба теста</span><b>{courseImpact.completedCount}</b></div>
+              </div>
+              <div className="impact-course-list">
+                {courseImpact.byCourse.map((course) => (
+                  <div key={course.courseId}>
+                    <span>{({ 'ai-start': 'ИИ без магии', prompts: 'Умные запросы', 'safe-ai': 'Безопасно и честно' })[course.courseId]}</span>
+                    <b>{course.completedCount ? `${course.beforeAverage} → ${course.afterAverage} из 5` : 'нет завершений'}</b>
+                  </div>
+                ))}
+              </div>
+            </>
+          ) : <p>Пока нет завершённых пар тестов. Перед стартом и после курса результаты появятся здесь автоматически.</p>}
+          <small>Стартовых тестов: {courseImpact.beforeCount} · финальных: {courseImpact.afterCount}</small>
+        </section>
+      )}
 
       {stats.total > 0 &&
         BLOCKS.map((block) => (
